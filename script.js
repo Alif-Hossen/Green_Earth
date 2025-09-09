@@ -5,6 +5,15 @@
 //     })
 
 
+// Remove Active -->
+
+const removeActive = ( ) => {
+    const lessonButtons = document.querySelectorAll(".lesson-btn");
+    lessonButtons.forEach(btn=>btn.classList.remove("active"));
+}
+
+
+
 const loadCategories = () => {
     fetch("https://openapi.programming-hero.com/api/categories")
         .then(res=>res.json())
@@ -22,7 +31,7 @@ const displayCategories = (Lessons) => {
         const categoriesDiv = document.createElement("div");
         categoriesDiv.innerHTML = `
 
-            <button onclick="loadLevelWord('${lesson.id}')" class="btn btn-outline border-none hover:bg-green-600 hover:text-white text-gray-600">  ${lesson.category_name} </button>
+            <button onclick="loadLevelWord('${lesson.id}')" id="lesson_btn-${lesson.id}" class="btn btn-outline border-none hover:bg-green-600 hover:text-white text-gray-600 lesson-btn">  ${lesson.category_name} </button>
 
         `
     categoriesContainer.append(categoriesDiv);
@@ -36,7 +45,13 @@ const loadLevelWord=(id) => {
     fetch(url)
         .then(res=>res.json())
         // .then(data=>console.log(data))
-        .then(data=>displayLevelWord(data.plants))
+
+        .then(data=> { const clickBtn = document.getElementById(`lesson_btn-${id}`)
+            removeActive()
+            clickBtn.classList.add("active")
+            displayLevelWord(data.plants) })
+
+        // .then(data=>displayLevelWord(data.plants)) // Active class er age eita use korchi. 
 }
 
 const displayLevelWord=(words)=>{
@@ -49,7 +64,7 @@ const displayLevelWord=(words)=>{
         const card=document.createElement("div");
         card.innerHTML=
         `
-            <div class="bg-white rounded-xl  w-[250px] h-[450px] mt-5 flex flex-col justify-between ">
+            <div class="bg-white rounded-xl  w-[250px] h-[400px] mt-5 flex flex-col justify-between ">
                         <div>
                             <img class="h-[150px] w-[230px] my-2 mx-2 rounded-lg" src="${word.image}" alt="">
                         </div>
