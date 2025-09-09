@@ -110,9 +110,9 @@ const displayLevelWord=(words)=>{
         const card=document.createElement("div");
         card.innerHTML=
         `
-            <div class="bg-white rounded-xl  w-[250px] h-[400px] mt-5 flex flex-col justify-between ">
+            <div class="bg-white rounded-xl  w-[300px] h-[450px] mt-5 flex flex-col justify-between ">
                         <div>
-                            <img class="h-[150px] w-[230px] my-2 mx-2 rounded-lg" src="${word.image}" alt="">
+                            <img class="h-[180px] w-[280px] my-2 mx-2 rounded-lg" src="${word.image}" alt="">
                         </div>
                         <div class="pl-4">
                             <div class="">
