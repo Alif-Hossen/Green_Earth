@@ -85,6 +85,19 @@ const displayCategories = (Lessons) => {
 // Spinner End
 
 // Category click e word load
+// const loadLevelWord = (id) => {
+//     const url = `https://openapi.programming-hero.com/api/category/${id}`;
+//     fetch(url)
+//         .then(res => res.json())
+//         .then(data => {
+//             const clickBtn = document.getElementById(`lesson_btn-${id}`);
+//             removeActive();
+//             clickBtn.classList.add("active");
+//             displayLevelWord(data.plants);
+//         })
+//         .catch(err => console.error(err));
+// }
+
 const loadLevelWord = (id) => {
     const url = `https://openapi.programming-hero.com/api/category/${id}`;
     fetch(url)
@@ -98,7 +111,10 @@ const loadLevelWord = (id) => {
         .catch(err => console.error(err));
 }
 
+
 // Display card
+
+
 const displayLevelWord = (words) => {
     const wordContainer = document.getElementById("word_container");
     wordContainer.innerHTML = "";
@@ -116,11 +132,11 @@ const displayLevelWord = (words) => {
                         <p class="text-gray-600 pt-1">${word.description}</p>
                     </div>
                     <div class="flex justify-between pt-3">
-                        <button class="px-2 rounded-xl bg-green-200 text-green-800">${word.category}</button>
-                        <h3 class="font-bold text-lg pr-2">৳${word.price}</h3>
+                        <button class="px-2 rounded-xl border-2 border-green-400 text-green-500 ">${word.category}</button>
+                        <h3 class="font-bold text-lg pr-2 text-green-600 ">৳${word.price}</h3>
                     </div>
                     <div>
-                        <button class="add-to-cart w-[220px] rounded-3xl bg-green-600 text-white mt-2 px-2 py-2 mb-4">Add To Cart</button>
+                        <button class=" add-to-cart w-[90%] rounded-3xl bg-green-500 text-white my-4 px-2 py-2 mb-4">Add To Cart</button>
                     </div>
                 </div>
             </div>
@@ -131,7 +147,8 @@ const displayLevelWord = (words) => {
         // Add To Cart click alert
         card.querySelector(".add-to-cart")
             .addEventListener("click", function(){
-                alert("Hey! Don't Click");
+                addToCart(word);
+                alert(`${word.name} has been added to the cart`);
             });
     });
 }
@@ -145,6 +162,11 @@ const loadAllPlants = () => {
         .catch(err => console.error(err));
 }
 
+// noutn
+
+
+
+
 // Page load e shob plants load hobe
 document.addEventListener("DOMContentLoaded", () => {
     loadAllPlants();
@@ -154,6 +176,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-// By Default -->
+// Cart -
+
+// Cart data
+let cart = [];
+let totalPrice = 0;
+
+// Function to add item to cart
+const addToCart = (word) => {
+    cart.push(word);
+    totalPrice += word.price;
+    renderCart();
+}
+
+// Function to remove item from cart by index
+const removeFromCart = (index) => {
+    totalPrice -= cart[index].price;
+    cart.splice(index, 1);
+    renderCart();
+}
+
+// Render cart items
+const renderCart = () => {
+    const cartItems = document.getElementById("cart_items");
+    const cartTotal = document.getElementById("cart_total");
+    cartItems.innerHTML = "";
+
+    cart.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "flex justify-between items-center mb-2";
+        div.innerHTML = `
+            <span class="font-bold">${item.name} 
+           <br>  ৳${item.price}</span>
+            <button class="text-red-500 font-bold">×</button>
+        `;
+        cartItems.appendChild(div);
+
+        div.querySelector("button").addEventListener("click", () => {
+            removeFromCart(index);
+        });
+    });
+
+    cartTotal.innerText = totalPrice;
+}
+
 
 
