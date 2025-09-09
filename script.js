@@ -84,102 +84,76 @@ const displayCategories = (Lessons) => {
 
 // Spinner End
 
-const loadLevelWord=(id) => {
-    // console.log(name);
+// Category click e word load
+const loadLevelWord = (id) => {
     const url = `https://openapi.programming-hero.com/api/category/${id}`;
-    // console.log(url);
     fetch(url)
-        .then(res=>res.json())
-        // .then(data=>console.log(data))
-
-        .then(data=> { const clickBtn = document.getElementById(`lesson_btn-${id}`)
-            removeActive()
-            clickBtn.classList.add("active")
-            displayLevelWord(data.plants) })
-
-        // .then(data=>displayLevelWord(data.plants)) // Active class er age eita use korchi. 
+        .then(res => res.json())
+        .then(data => {
+            const clickBtn = document.getElementById(`lesson_btn-${id}`);
+            removeActive();
+            clickBtn.classList.add("active");
+            displayLevelWord(data.plants);
+        })
+        .catch(err => console.error(err));
 }
 
-const displayLevelWord=(words)=>{
-    // console.log(words)
-    const wordContainer =document.getElementById("word_container");
-    wordContainer.innerHTML="";
+// Display card
+const displayLevelWord = (words) => {
+    const wordContainer = document.getElementById("word_container");
+    wordContainer.innerHTML = "";
+
     words.forEach((word) => {
-        // console.log(word);
-
-        const card=document.createElement("div");
-        card.innerHTML=
-        `
-            <div class="bg-white rounded-xl  w-[300px] h-[450px] mt-5 flex flex-col justify-between ">
-                        <div>
-                            <img class="h-[180px] w-[280px] my-2 mx-2 rounded-lg" src="${word.image}" alt="">
-                        </div>
-                        <div class="pl-4">
-                            <div class="">
-                                <h2 onclick="loadWordDetails(${word.id})" class="text-lg font-bold">${word.name}</h2>
-                                <p class="text-gray-600 pt-1">${word.description}</p>
-                            </div>
-                            <div class="flex justify-between pt-3">
-                                <button class=" px-2 rounded-xl bg-green-200 text-green-800">${word.category}</button>
-                                <h3 class="font-bold text-lg pr-2">৳${word.price}</h3>
-                            </div>
-                            <div>
-
-                                <button  class=" w-[220px] rounded-3xl bg-green-600 text-white mt-2 px-2 py-2 mb-4">Add To Card</button>
-                            </div>
-                        </div>
+        const card = document.createElement("div");
+        card.innerHTML = `
+            <div class="bg-white rounded-xl w-[300px] h-[450px] mt-5 flex flex-col justify-between">
+                <div>
+                    <img class="h-[180px] w-[280px] my-2 mx-2 rounded-lg" src="${word.image}" alt="">
+                </div>
+                <div class="pl-4">
+                    <div>
+                        <h2 onclick="loadWordDetails(${word.id})" class="text-lg font-bold">${word.name}</h2>
+                        <p class="text-gray-600 pt-1">${word.description}</p>
                     </div>
-
+                    <div class="flex justify-between pt-3">
+                        <button class="px-2 rounded-xl bg-green-200 text-green-800">${word.category}</button>
+                        <h3 class="font-bold text-lg pr-2">৳${word.price}</h3>
+                    </div>
+                    <div>
+                        <button class="add-to-cart w-[220px] rounded-3xl bg-green-600 text-white mt-2 px-2 py-2 mb-4">Add To Cart</button>
+                    </div>
+                </div>
+            </div>
         `;
+
         wordContainer.append(card);
-    })
+
+        // Add To Cart click alert
+        card.querySelector(".add-to-cart")
+            .addEventListener("click", function(){
+                alert("Hey! Don't Click");
+            });
+    });
 }
 
+// By default shob plants load
+const loadAllPlants = () => {
+    const url = `https://openapi.programming-hero.com/api/plants`;
+    fetch(url)
+        .then(res => res.json())
+        .then(data => displayLevelWord(data.plants))
+        .catch(err => console.error(err));
+}
+
+// Page load e shob plants load hobe
+document.addEventListener("DOMContentLoaded", () => {
+    loadAllPlants();
+    loadCategories(); // category buttons load
+});
 
 
 
 
+// By Default -->
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-loadCategories();
