@@ -12,7 +12,36 @@ const removeActive = ( ) => {
     lessonButtons.forEach(btn=>btn.classList.remove("active"));
 }
 
+// Modal Start-->
+const loadWordDetails = async (id) => {
+    const url = `https://openapi.programming-hero.com/api/plant/${id}`
+    // console.log(url);
 
+    const res = await fetch(url);
+    const details = await res.json();
+
+    console.log(details);
+    displayWordDetails(details);
+
+};
+
+const displayWordDetails = (details)=>{
+    console.log(details);
+    const detailsBox = document.getElementById("details_container");
+    detailsBox.innerHTML = `
+
+        <h1 class="font-bold ">${details.plants.name}</h1>
+        <img class=" h-[250px] w-[90%]  my-2 mx-auto rounded-lg" src="${details.plants.image}" alt="">
+        <h1><span class="font-bold"> Category : </span>  ${details.plants.category}</h1>
+        <h1><span class="font-bold"> Price : </span>${details.plants.price}</h1>
+        <h1> <span class="font-bold"> Description : </span> ${details.plants.description}</h1>
+        
+    
+    `;
+    document.getElementById("word_modal").showModal();
+}
+
+// Modal End 
 
 const loadCategories = () => {
     fetch("https://openapi.programming-hero.com/api/categories")
@@ -38,6 +67,23 @@ const displayCategories = (Lessons) => {
 
     }
 }
+
+// Spinner
+
+// const manageSpinner=(status) => {
+//     if(status==true){
+//         document.getElementById("spinner").classList.remove("hidden");
+//         document.getElementById("word_container").classList.add("hidden");
+//     } else {
+//         document.getElementById("word_container").classList.remove("hidden");
+//         document.getElementById("spinner").classList.add("hidden");
+//     }
+// }
+
+
+
+// Spinner End
+
 const loadLevelWord=(id) => {
     // console.log(name);
     const url = `https://openapi.programming-hero.com/api/category/${id}`;
@@ -59,7 +105,7 @@ const displayLevelWord=(words)=>{
     const wordContainer =document.getElementById("word_container");
     wordContainer.innerHTML="";
     words.forEach((word) => {
-        console.log(word);
+        // console.log(word);
 
         const card=document.createElement("div");
         card.innerHTML=
@@ -70,7 +116,7 @@ const displayLevelWord=(words)=>{
                         </div>
                         <div class="pl-4">
                             <div class="">
-                                <h2 class="text-lg font-bold">${word.name}</h2>
+                                <h2 onclick="loadWordDetails(${word.id})" class="text-lg font-bold">${word.name}</h2>
                                 <p class="text-gray-600 pt-1">${word.description}</p>
                             </div>
                             <div class="flex justify-between pt-3">
@@ -78,7 +124,8 @@ const displayLevelWord=(words)=>{
                                 <h3 class="font-bold text-lg pr-2">৳${word.price}</h3>
                             </div>
                             <div>
-                                <button class=" w-[220px] rounded-3xl bg-green-600 text-white mt-2 px-2 py-2 mb-4">Add To Card</button>
+
+                                <button  class=" w-[220px] rounded-3xl bg-green-600 text-white mt-2 px-2 py-2 mb-4">Add To Card</button>
                             </div>
                         </div>
                     </div>
